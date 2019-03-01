@@ -1,9 +1,22 @@
 {
   "streams": [
     {
-      "title": "happ",
-      "description": "me",
+      "title": "first stream",
+      "description": "test db.json",
+      "userId": "107232608319539818864",
       "id": 1
+    },
+    {
+      "title": "second stream",
+      "description": "testing",
+      "userId": "107232608319539818864",
+      "id": 2
+    },
+    {
+      "title": "third stream",
+      "description": "it's 3rd stream",
+      "userId": "107232608319539818864",
+      "id": 3
     }
   ]
 }
