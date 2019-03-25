@@ -4,6 +4,10 @@ import { signIn, signOut } from '../actions';
 
 
 class GoogleAuth extends React.Component {
+  //first render the initial state of auth
+  //componentDidMount update auth state to match gapi auth state
+    // render to screeen
+  
   
   componentDidMount() {
     window.gapi.load('client:auth2', () => {
