@@ -1,19 +1,19 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
 import { fetchStreams } from '../../actions';
 import { Link } from 'react-router-dom';
 
-class StreamList extends React.Component {
+const StreamList = (props) => {
 
   //fetch streams immediately after page rendered.
-  componentDidMount() {
-    this.props.fetchStreams();
-  };
+  useEffect(() => {
+    props.fetchStreams();
+  }, []);
   
   // have EDIT/DELETE if stream userId is current user Id
-  renderAdmin(stream) {
-    if (stream.userId === this.props.currentUserId) {
-      return (
+  const renderAdmin = stream => {
+    console.log('stream', stream)
+    return stream.userId === props.currentUserId? 
         <div className="right floated content">
           <Link to={`/stream/edit/${stream.id}`} className="ui button primary">
             EDIT
@@ -22,36 +22,30 @@ class StreamList extends React.Component {
           <Link to={`/stream/delete/${stream.id}`} className="ui button negative">
             Delete
           </Link>
-        </div>
-      );
-    }
+        </div> : <></>;
   };
 
-  renderCreate() {
-    if (this.props.isSignedIn) {
-      return (
+  //create link to StreamCreate
+  const renderCreate = () => {
+    return props.isSignedIn?
         <div style={{ textAlign: 'right' }}>
           <Link to="/stream/new" className="ui button primary">
             Create Stream
           </Link>
-        </div>
-      );
-    };
+        </div> : <></>
   }
   
-  renderList() {
-    return this.props.streams.map(stream => {
+  //map redux streams state to a list
+  const renderList = () => {
+    return props.streams.map(stream => {
       return (
         <div className="item" key={stream.id}>
-
-          { this.renderAdmin(stream) }
-         
+          { renderAdmin(stream) }
           <i className="large middle aligned icon camera" />
           <div className="content">
           <Link to={`/stream/${stream.id}`} className="header">
             {stream.title}
-          </Link>
-            
+          </Link>       
             <div className="description">
             {stream.description}
             </div>
@@ -60,24 +54,22 @@ class StreamList extends React.Component {
       );
     });
   }
-
-  render() {
-    return (
-      <div>
-        <h2>Streams</h2>
-        <div className="ui celled list">{this.renderList()}</div>
-          { this.renderCreate() }
-
-      </div>
-    );
-
-  };
   
+
+  //display a list of streams and button redirect to a form to create new stream
+  return (
+    <div>
+      <h2>Streams</h2>
+      <div className="ui celled list">{renderList()}</div>
+        { renderCreate() }
+    </div>
+  );
 };
 
 const mapStatesToProps = state => {
+  console.log('state', state.streams) 
   return { 
-    streams: Object.values(state.streams),
+    streams: Object.values(state.streams), //output: Array [value1, value2, value3]
     currentUserId: state.auth.userId,
     isSignedIn: state.auth.isSignedIn
   };
